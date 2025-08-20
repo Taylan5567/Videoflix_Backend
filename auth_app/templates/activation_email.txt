@@ -1,0 +1,7 @@
+Hallo {{ user_email_string }},
+
+bitte aktiviere dein Konto über diesen Link:
+{{ activation_link_string }}
+
+Der Link ist 24 Stunden gültig.
+Wenn du das nicht warst, ignoriere diese E-Mail bitte.
