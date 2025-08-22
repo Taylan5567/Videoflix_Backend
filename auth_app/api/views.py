@@ -1,4 +1,3 @@
-from urllib import request
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
@@ -10,7 +9,6 @@ from django.utils.encoding import force_bytes, force_str
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
-
 from django_rq import get_queue
 from .tasks import send_password_reset_email
 
