@@ -37,7 +37,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
             username=email,         
             email=email,            
             password=password,
-            is_active=False 
+            is_active=False,
+            password_forget=False
         )
         return user
     
@@ -66,3 +67,12 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         attrs['username'] = user.username
         data = super().validate(attrs)
         return data
+
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    new_password = serializers.CharField(required=True)
+    confirm_password = serializers.CharField(required=True)
+
+    def validate(self, attrs):
+        if attrs['new_password'] != attrs['confirm_password']:
+            raise serializers.ValidationError("Passwords do not match")
+        return attrs

@@ -56,3 +56,53 @@ def send_activation_email(pk):
 
     email_message_instance.attach_alternative(email_html_body_string, "text/html")
     email_message_instance.send(fail_silently=False)
+
+
+def build_link_for_password_reset(user_instance):
+    user_key_bytes = force_bytes(user_instance.pk)
+    user_uid = urlsafe_base64_encode(user_key_bytes)
+    password_reset_token = default_token_generator.make_token(user_instance)
+
+    password_reset_path = reverse(
+        'password_reset_confirm',
+        kwargs={'uidb64': user_uid, 'token': password_reset_token}
+    )
+
+    password_reset_link = f"{settings.SITE_DOMAIN}{password_reset_path}"
+
+    return password_reset_link
+
+
+def send_password_reset_email(pk):
+    user_model = get_user_model()
+    user_instance = user_model.objects.get(pk=pk)
+    password_reset_link = build_link_for_password_reset(user_instance)
+
+    email_subject_string = render_to_string(
+        "password_reset_subject.txt"
+    ).strip()
+
+    email_context_dictionary = {
+        "user_email_string": user_instance.email,
+        "password_reset_link_string": password_reset_link,
+    }
+
+    email_text_body_string = render_to_string(
+        "password_reset_email.txt",
+        email_context_dictionary,
+    )
+    email_html_body_string = render_to_string(
+        "password_reset_email.html",
+        email_context_dictionary,
+    )
+
+    email_message_instance = EmailMultiAlternatives(
+        subject=email_subject_string,
+        body=email_text_body_string,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=[user_instance.email],
+    )
+
+    email_message_instance.attach_alternative(email_html_body_string, "text/html")
+    email_message_instance.send(fail_silently=False)
+

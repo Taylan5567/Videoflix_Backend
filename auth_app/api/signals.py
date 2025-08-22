@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .tasks import send_activation_email
+from .tasks import send_activation_email, send_password_reset_email
 from django_rq import get_queue
 
 @receiver(post_save, sender=get_user_model())
@@ -11,3 +11,14 @@ def enqueue_activation_email_on_user_create(sender, instance, created, **kwargs)
 
     queue_instance = get_queue("default")
     queue_instance.enqueue(send_activation_email, instance.id, job_timeout=900)
+
+
+
+@receiver(post_save, sender=get_user_model())
+def enqueue_password_reset(sender, instance, created, **kwargs):
+    if post_save and instance.is_active:
+       queue_instance = get_queue("default")
+       queue_instance.enqueue(send_password_reset_email, instance.id, job_timeout=900)
+       return
+
+
