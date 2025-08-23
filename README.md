@@ -1,31 +1,31 @@
 # 🎥 Videoflix
 
-> **Videoflix** ist deine eigene Streaming-Plattform im Stil von Netflix: Benutzerverwaltung, Video-Upload, E-Mail-Aktivierung, Docker-basiertes Deployment – alles ready, um produktiv zu starten!
+> **Videoflix** is your own Netflix-style streaming platform: user management, video upload, email activation, Docker-based deployment – ready to launch!
 
 ---
 
 ## 🚀 Features
 
-- 🔑 Benutzerregistrierung & Login mit Aktivierungs-E-Mail  
-- 🔒 Passwort-Zurücksetzen via E-Mail  
-- 👥 Rollen & Berechtigungen (User / Admin)  
-- 📂 Upload & Verwaltung von Videos / Inhalten  
-- 🗂️ PostgreSQL als Datenbank, Redis für Caching/Queues  
-- 🐳 Deployment mit Docker & Docker Compose  
-- ⚡ HLS-Streaming (Video Manifest & Segmente)  
+- 🔑 User registration & login with activation email  
+- 🔒 Password reset via email  
+- 👥 Roles & permissions (User / Admin)  
+- 📂 Upload & manage videos / content  
+- 🗂️ PostgreSQL as database, Redis for caching/queues  
+- 🐳 Deployment with Docker & Docker Compose  
+- ⚡ HLS streaming (video manifest & segments)  
 
 ---
 
-## 🛠 Technologien & Architektur
+## 🛠 Technologies & Architecture
 
 - **Backend:** Django + Django REST Framework  
-- **Auth:** JWT-Cookies mit E-Mail-Aktivierung & Reset  
+- **Auth:** JWT cookies with email activation & reset  
 - **DB:** PostgreSQL  
 - **Caching/Queue:** Redis  
 - **Deployment:** Docker & Docker Compose  
-- **Konfiguration:** `.env` basierte Konfiguration  
+- **Configuration:** `.env` based configuration  
 
-**Architektur:**
+**Architecture:**
 
 ```
 [Frontend] ↔ [Django Backend API] ↔ [PostgreSQL]
@@ -34,15 +34,15 @@
 
 ---
 
-## 📂 Projektstruktur
+## 📂 Project Structure
 
 ```text
 videoflix/
-├── auth_app/             # Authentifizierung & E-Mail-Templates
-├── content_app/          # Videos & Medienverwaltung
+├── auth_app/             # Authentication & email templates
+├── content_app/          # Video & media management
 ├── core/                 # Settings, URLs, WSGI / ASGI
-├── media/                # Hochgeladene Videos
-├── static/               # Statische Assets
+├── media/                # Uploaded videos
+├── static/               # Static assets
 ├── docker-compose.yml
 ├── backend.Dockerfile
 ├── requirements.txt
@@ -53,48 +53,48 @@ videoflix/
 
 ## ⚙️ Installation & Setup
 
-### Voraussetzungen
+### Requirements
 - Python **3.12+**  
 - Docker & Docker Compose  
 - (Optional) Virtualenv  
 
-### Lokales Setup (ohne Docker)
+### Local Setup (without Docker)
 ```bash
-# Repo klonen
-git clone https://github.com/dein-user/videoflix.git
+# Clone repo
+git clone https://github.com/your-user/videoflix.git
 cd videoflix
 
-# Virtuelle Umgebung
+# Virtual environment
 python -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
 
-# Abhängigkeiten installieren
+# Install dependencies
 pip install -r requirements.txt
 
-# .env anlegen
+# Create .env file
 cp .env.template .env
 
-# Migrationen anwenden & Superuser erstellen
+# Run migrations & create superuser
 python manage.py migrate
 python manage.py createsuperuser
 
-# Server starten
+# Start server
 python manage.py runserver
 ```
 
-### Mit Docker
+### With Docker
 ```bash
 docker compose up --build
 
-# Stoppen
+# Stop
 docker compose down
 ```
 
 ---
 
-## 🔑 Umgebungsvariablen
+## 🔑 Environment Variables
 
-Beispiel (`.env.template`):
+Example (`.env.template`):
 
 ```ini
 # Superuser
@@ -106,9 +106,9 @@ DJANGO_SUPERUSER_EMAIL=admin@example.com
 SECRET_KEY="django-insecure-***"
 DEBUG=True
 ALLOWED_HOSTS=localhost,127.0.0.1
-CSRF_TRUSTED_ORIGINS=http://localhost:5500,http://127.0.0.1:5500
+CSRF_TRUSTED_ORIGINS=http://localhost:4200,http://127.0.0.1:4200
 
-# Datenbank (Postgres)
+# Database (Postgres)
 DB_NAME=videoflix_db
 DB_USER=videoflix_user
 DB_PASSWORD=videoflix_pass
@@ -121,7 +121,7 @@ REDIS_LOCATION=redis://redis:6379/1
 REDIS_PORT=6379
 REDIS_DB=0
 
-# SMTP Konfiguration
+# SMTP Configuration
 EMAIL_HOST=smtp.example.com
 EMAIL_PORT=587
 EMAIL_HOST_USER=your_email_user
@@ -133,45 +133,66 @@ DEFAULT_FROM_EMAIL=default_from_email
 
 ---
 
-## 📡 API (Kurzreferenz)
+## 📡 API (Quick Reference)
 
-### 🔐 Authentifizierung & Benutzer
+### 🔐 Authentication & Users
 
 `POST /api/register/`  
-➡️ Neues Konto registrieren  
+➡️ Register a new account  
 
 `POST /api/login/`  
-➡️ Login mit E-Mail/Passwort (JWT Cookie)  
+➡️ Login with email/password (JWT cookie)  
 
 `POST /api/logout/`  
-➡️ Logout, Token wird invalidiert  
+➡️ Logout, token invalidated  
 
 `GET /api/activate/<uidb64>/<token>/`  
-➡️ Aktiviert ein Benutzerkonto nach E-Mail-Verifikation  
+➡️ Activate a user account after email verification  
 
 `POST /api/token/refresh/`  
-➡️ Frischt das JWT Cookie auf  
+➡️ Refresh the JWT cookie  
 
 `POST /api/password_reset/`  
-➡️ Sendet eine E-Mail mit Reset-Link  
+➡️ Send reset email  
 
 `POST /api/password_reset/confirm/<uidb64>/<token>/`  
-➡️ Setzt ein neues Passwort  
+➡️ Set a new password  
 
 ---
 
 ### 🎬 Video & Streaming
 
 `GET /api/video/`  
-➡️ Liste aller Videos  
+➡️ List all videos  
 
 `GET /api/video/<movie_id>/<resolution>/index.m3u8`  
-➡️ Manifest für HLS-Streaming (z. B. 480p, 720p, 1080p)  
+➡️ Manifest for HLS streaming (e.g., 480p, 720p, 1080p)  
 
 `GET /api/video/<movie_id>/<resolution>/<segment>/`  
-➡️ Holt ein spezifisches HLS-Segment  
+➡️ Fetch a specific HLS segment  
 
 ---
+
+### Example Response: Video List
+
+```json
+[
+  {
+    "id": 1,
+    "title": "Inception",
+    "description": "A mind-bending thriller",
+    "duration": 8880,
+    "available_resolutions": ["480p", "720p", "1080p"]
+  },
+  {
+    "id": 2,
+    "title": "Matrix",
+    "description": "Sci-Fi Classic",
+    "duration": 8160,
+    "available_resolutions": ["480p", "720p"]
+  }
+]
+```
 
 ---
 
@@ -185,15 +206,15 @@ python manage.py test
 
 ## 📈 Roadmap
 
-- [ ] Video-Streaming mit FFmpeg-Transcoding  
-- [ ] Playlists & Favoriten  
-- [ ] Mehrsprachigkeit (Deutsch / Englisch / Türkisch)  
-- [ ] Abo-Modell mit Zahlungsintegration  
-- [ ] Admin-Dashboard mit Statistiken & Analytics  
+- [ ] Video streaming with FFmpeg transcoding  
+- [ ] Playlists & favorites  
+- [ ] Multi-language support (English / German / Turkish)  
+- [ ] Subscription model with payment integration  
+- [ ] Admin dashboard with statistics & analytics  
 
 ---
 
-## 👨‍💻 Autor
+## 👨‍💻 Author
 
 - **Name:** Özgür Taylan Umucu  
 - **Portfolio:** [oezguer-taylan.umucu.de](https://oezguer-taylan.umucu.de/)  
