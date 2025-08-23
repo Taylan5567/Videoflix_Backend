@@ -37,8 +37,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             username=email,         
             email=email,            
             password=password,
-            is_active=False,
-            password_forget=False
+            is_active=False
         )
         return user
     
