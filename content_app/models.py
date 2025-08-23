@@ -1,13 +1,21 @@
 from django.db import models
 
-
-
 class Video(models.Model):
+    """
+    Model representing a video resource.
+    """
 
     CATEGORY_CHOICES = [
         ('movie', 'Movie'),
         ('series', 'Series'),
         ('documentary', 'Documentary'),
+        ('romance', 'Romance'),
+        ('action', 'Action'),
+        ('comedy', 'Comedy'),
+        ('horror', 'Horror'),
+        ('thriller', 'Thriller'),
+        ('sci-fi', 'Sci-Fi'),
+        ('fantasy', 'Fantasy'),
     ]
 
     title = models.CharField(max_length=200, default="")

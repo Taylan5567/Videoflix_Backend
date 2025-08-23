@@ -16,6 +16,9 @@ class RegistrationView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
+        """
+        Register a new user as inactive and return a JWT access token.
+        """
         serializer = RegistrationSerializer(data=request.data)
 
         if not serializer.is_valid():
@@ -38,6 +41,9 @@ class CookieTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
     def post(self, request, *args, **kwargs):
+        """
+        Authenticate user with email and password, set JWT tokens in HttpOnly cookies.
+        """
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -75,6 +81,9 @@ class CookieTokenObtainPairView(TokenObtainPairView):
     
 class CookieRefreshView(TokenRefreshView):        
         def post(self, request, *args, **kwargs):
+            """
+            Refresh the access token using refresh token from cookie.
+            """
             refresh_token = request.COOKIES.get('refresh_token')
             
             if refresh_token is None:
@@ -107,6 +116,9 @@ class ActivateAccountView(APIView):
 
 
     def get(self, request, uidb64: str, token: str):
+        """
+        Activate a user account given a UID and token from an email link.
+        """
         try:
             user_pk = force_str(urlsafe_base64_decode(uidb64))
         except:
@@ -133,6 +145,9 @@ class ActivateAccountView(APIView):
 class LogoutView(APIView):
     permission_classes = []
     def post(self, request, *args, **kwargs):
+        """
+        Log out user by blacklisting the refresh token and deleting cookies.
+        """
         refresh_token = request.COOKIES.get('refresh_token')
         if not refresh_token:
             return Response({"detail": "No active session found"}, status=status.HTTP_400_BAD_REQUEST)
@@ -155,6 +170,9 @@ class PasswordresetView(APIView):
     permission_classes = []
 
     def post(self, request, *args, **kwargs):
+        """
+        Enqueue a password reset email task if email corresponds to an active user.
+        """
         email = request.data.get('email')
         if not email:
             return Response({"detail": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -176,6 +194,9 @@ class PasswordResetConfirmView(APIView):
     serializer_class = PasswordResetConfirmSerializer
 
     def post(self, request, uidb64: str, token: str):
+        """
+        Confirm password reset given UID, token, and new password values.
+        """
         try:
             user_pk = force_str(urlsafe_base64_decode(uidb64))
         except:

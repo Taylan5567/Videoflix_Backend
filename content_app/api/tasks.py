@@ -3,6 +3,16 @@ from pathlib import Path
 from django.conf import settings
 
 def convert_video_to_hls(source, video_id):
+    """
+    Convert a video file to HLS (HTTP Live Streaming) format at 720p resolution.
+
+    Args:
+        source (str or Path): Path to the source video file.
+        video_id (str): Unique identifier for the output directory/manifest.
+
+    Returns:
+        Path: Path to the generated HLS manifest (.m3u8) file.
+    """
     source_path = Path(source)
     output_dir = Path(settings.MEDIA_ROOT) / "videos" / str(video_id) / "720p"
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -27,6 +37,16 @@ def convert_video_to_hls(source, video_id):
     return manifest_path
 
 def thumbnail_video(source, video_id):
+    """
+    Generate a thumbnail from a video file using FFmpeg.
+
+    Args:
+        source (str or Path): Path to the source video.
+        video_id (str): Identifier for the output filename.
+
+    Returns:
+        Path: Path to the generated thumbnail image.
+    """
     source_path = Path(source)
     output_dir = Path(settings.MEDIA_ROOT) / "thumbnails"
     output_dir.mkdir(parents=True, exist_ok=True)

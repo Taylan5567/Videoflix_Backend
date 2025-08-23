@@ -10,6 +10,15 @@ from django.contrib.auth.tokens import default_token_generator
 
 
 def build_link(user_instance):
+    """
+    Generate an account activation link for the given user instance.
+
+    Args:
+        user_instance (User): Instance of the user model.
+
+    Returns:
+        str: Full URL string for the user activation link.
+    """
     user_key_bytes = force_bytes(user_instance.pk)
     user_uid = urlsafe_base64_encode(user_key_bytes)
     activation_token = default_token_generator.make_token(user_instance)
@@ -25,6 +34,12 @@ def build_link(user_instance):
 
 
 def send_activation_email(pk):
+    """
+    Send an activation email to the user identified by primary key.
+
+    Args:
+        pk (int): Primary key (ID) of the user.
+    """
     user_model = get_user_model()
     user_instance = user_model.objects.get(pk=pk)
     activation_link = build_link(user_instance)
@@ -59,6 +74,15 @@ def send_activation_email(pk):
 
 
 def build_link_for_password_reset(user_instance):
+    """
+    Generate a password reset link for the given user instance.
+
+    Args:
+        user_instance (User): Instance of the user model.
+
+    Returns:
+        str: Full URL string for the password reset link.
+    """
     user_key_bytes = force_bytes(user_instance.pk)
     user_uid = urlsafe_base64_encode(user_key_bytes)
     password_reset_token = default_token_generator.make_token(user_instance)
@@ -74,6 +98,12 @@ def build_link_for_password_reset(user_instance):
 
 
 def send_password_reset_email(pk):
+    """
+    Send a password reset email to the user identified by primary key.
+
+    Args:
+        pk (int): Primary key (ID) of the user.
+    """
     user_model = get_user_model()
     user_instance = user_model.objects.get(pk=pk)
     password_reset_link = build_link_for_password_reset(user_instance)

@@ -8,6 +8,18 @@ from django_rq import get_queue
 
 @receiver(post_save, sender=Video)
 def video_post_save(sender, instance, created, *args, **kwargs):
+    """
+    Handles post-save events when a new Video is created.
+
+    Enqueues background tasks to:
+    - Convert the uploaded video to HLS format.
+    - Generate a thumbnail for the video.
+
+    Args:
+        sender (Model): The model class.
+        instance (Video): The actual instance being saved.
+        created (bool): Whether this is a new instance.
+    """
     if not created:
         return
 
