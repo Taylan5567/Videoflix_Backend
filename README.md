@@ -196,14 +196,6 @@ DEFAULT_FROM_EMAIL=default_from_email
 
 ---
 
-## 🧪 Tests
-
-```bash
-python manage.py test
-```
-
----
-
 ## 📈 Roadmap
 
 - [ ] Video streaming with FFmpeg transcoding  
