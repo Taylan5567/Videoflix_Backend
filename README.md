@@ -173,36 +173,9 @@ DEFAULT_FROM_EMAIL=default_from_email
 
 ---
 
-### Example Response: Video List
-
-```json
-[
-  {
-    "id": 1,
-    "title": "Inception",
-    "description": "A mind-bending thriller",
-    "duration": 8880,
-    "available_resolutions": ["480p", "720p", "1080p"]
-  },
-  {
-    "id": 2,
-    "title": "Matrix",
-    "description": "Sci-Fi Classic",
-    "duration": 8160,
-    "available_resolutions": ["480p", "720p"]
-  }
-]
-```
-
----
-
 ## 📈 Roadmap
 
 - [ ] Video streaming with FFmpeg transcoding  
-- [ ] Playlists & favorites  
-- [ ] Multi-language support (English / German / Turkish)  
-- [ ] Subscription model with payment integration  
-- [ ] Admin dashboard with statistics & analytics  
 
 ---
 
