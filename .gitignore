@@ -1,0 +1,81 @@
+# ========================================
+# Python
+# ========================================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.manifest
+*.spec
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env.bak/
+env/
+
+# ========================================
+# Django
+# ========================================
+*.log
+db.sqlite3
+media/
+staticfiles/
+*.pot
+*.py,cover
+local_settings.py
+
+# Migrations (nur wenn du die nicht tracken willst)
+# **achte drauf: meist sinnvoll, migrations im Repo zu haben!**
+# */migrations/*
+
+# ========================================
+# Env & Config
+# ========================================
+.env
+.env.*
+!env.template
+
+# ========================================
+# Docker
+# ========================================
+docker-compose.override.yml
+*.pid
+*.seed
+*.tar
+*.bak
+*.backup
+*.log
+
+# ========================================
+# VSCode / IDE
+# ========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ========================================
+# Tests / Coverage
+# ========================================
+.coverage
+htmlcov/
+.tox/
+.nox/
+.cache/
+.pytest_cache/
+.coverage.*
+nosetests.xml
+coverage.xml
+*.cover
+*.hypothesis/
