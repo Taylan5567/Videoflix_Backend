@@ -143,7 +143,7 @@ class ActivateAccountView(APIView):
     
 
 class LogoutView(APIView):
-    permission_classes = []
+    permission_classes = [AllowAny]
     def post(self, request, *args, **kwargs):
         """
         Log out user by blacklisting the refresh token and deleting cookies.
