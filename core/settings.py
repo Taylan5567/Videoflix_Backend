@@ -38,7 +38,9 @@ CORS_ALLOWED_ORIGINS = os.environ.get(
 ).split(",")
 CORS_ALLOW_CREDENTIALS = True
 
-SITE_DOMAIN = os.getenv("SITE_DOMAIN", "http://localhost:8000")
+ACTIVATE_LINK = "http://127.0.0.1:5500/pages/auth/activate.html"
+PASSWORD_CONFIRMATION_LINK = "http://127.0.0.1:5500/pages/auth/confirm_password.html"
+PASSWORD_RESET_LINK = "http://127.0.0.1:5500/pages/auth/forgot_password.html"
 # Application definition
 
 INSTALLED_APPS = [

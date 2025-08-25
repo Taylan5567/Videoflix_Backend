@@ -24,11 +24,11 @@ def build_link(user_instance):
     activation_token = default_token_generator.make_token(user_instance)
 
     activation_path = reverse(
-        'activate',
+        'activate-account',
         kwargs={'uidb64': user_uid, 'token': activation_token}  
     )
 
-    activation_link = f"{settings.SITE_DOMAIN}{activation_path}"
+    activation_link = f"{settings.ACTIVATE_LINK}?{activation_path}"
 
     return activation_link
 
@@ -88,11 +88,11 @@ def build_link_for_password_reset(user_instance):
     password_reset_token = default_token_generator.make_token(user_instance)
 
     password_reset_path = reverse(
-        'password_reset_confirm',
+        'password_reset',
         kwargs={'uidb64': user_uid, 'token': password_reset_token}
     )
 
-    password_reset_link = f"{settings.SITE_DOMAIN}{password_reset_path}"
+    password_reset_link = f"{settings.PASSWORD_RESET_LINK}{password_reset_path}"
 
     return password_reset_link
 

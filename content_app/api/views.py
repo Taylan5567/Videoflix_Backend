@@ -5,15 +5,16 @@ from .serializers import VideoSerializer
 from rest_framework.permissions import IsAuthenticated
 import os
 
+
 class VideoListView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
     def get(self, request, *args, **kwargs):
         videos = Video.objects.all()
         serializer = VideoSerializer(videos, many=True)
         return Response(serializer.data)
     
 class VideoManifestView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
     def get(self, request, movie_id, resolution, *args, **kwargs):
         try:
             video = Video.objects.get(id=movie_id)
@@ -30,7 +31,7 @@ class VideoManifestView(APIView):
         return Response(manifest_content, content_type='application/vnd.apple.mpegurl')
     
 class VideoSegmentView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
 
     def get(self, request, movie_id, resolution, segment, *args, **kwargs):
         try:
