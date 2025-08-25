@@ -23,3 +23,4 @@ urlpatterns = [
     path('api/', include('auth_app.api.urls')),
     path('api/', include('content_app.api.urls')),
 ]
+
