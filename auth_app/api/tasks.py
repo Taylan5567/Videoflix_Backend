@@ -108,10 +108,7 @@ def send_password_reset_email(pk):
     user_instance = user_model.objects.get(pk=pk)
     password_reset_link = build_link_for_password_reset(user_instance)
 
-    email_subject_string = render_to_string(
-        "password_reset_subject.txt"
-    ).strip()
-
+    
     email_context_dictionary = {
         "user_email_string": user_instance.email,
         "password_reset_link_string": password_reset_link,
@@ -127,7 +124,6 @@ def send_password_reset_email(pk):
     )
 
     email_message_instance = EmailMultiAlternatives(
-        subject=email_subject_string,
         body=email_text_body_string,
         from_email=settings.DEFAULT_FROM_EMAIL,
         to=[user_instance.email],
