@@ -26,7 +26,7 @@ class VideoListView(APIView):
         -------
         """
         videos = Video.objects.all()
-        data = VideoSerializer(videos, many=True).data 
+        data = VideoSerializer(videos, many=True).data
         return Response(data) 
     
 class VideoManifestView(APIView):
@@ -89,3 +89,28 @@ class VideoSegmentView(APIView):
             return Response({"error": "Segment not found", "path": segment_path}, status=404)
 
         return FileResponse(open(segment_path, "rb"), content_type="video/mp2t")
+    
+
+
+
+class ThumbnailView(APIView):
+    """
+    Serve the thumbnail image for a given video.
+    """
+
+    permission_classes = []
+
+    def get(self, request, movie_id, *args, **kwargs):
+        try:
+            video = Video.objects.get(id=movie_id)
+        except Video.DoesNotExist:
+            return Response({"error": "Video not found"}, status=404)
+
+        thumbnail_path = os.path.join(
+            settings.MEDIA_ROOT, "videos", str(video.id), "{video.id}_thumbnail.jpg"
+        )
+
+        if not os.path.exists(thumbnail_path):
+            return Response({"error": "Thumbnail not found", "path": thumbnail_path}, status=404)
+
+        return FileResponse(open(thumbnail_path, "rb"), content_type="image/jpeg")

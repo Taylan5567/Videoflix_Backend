@@ -93,7 +93,7 @@ def thumbnail_video(source, video_id):
         Path: Path to the generated thumbnail image.
     """
     source_path = Path(source)
-    output_dir = Path(settings.MEDIA_ROOT) / "thumbnails"
+    output_dir = Path(settings.MEDIA_ROOT) / "videos" / str(video_id)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     thumbnail_path = output_dir / f"{video_id}_thumbnail.jpg"
@@ -106,6 +106,9 @@ def thumbnail_video(source, video_id):
         str(thumbnail_path),
     ]
 
-    subprocess.run(cmd, capture_output=True)
+    result = subprocess.run(cmd, capture_output=True, text=True)
 
-    return thumbnail_path
+    if result.returncode != 0:
+        raise RuntimeError(f"ffmpeg failed: {result.stderr}")
+
+    return settings.MEDIA_URL + f"videos/{video_id}/{video_id}_thumbnail.jpg"

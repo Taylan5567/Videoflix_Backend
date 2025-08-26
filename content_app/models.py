@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 class Video(models.Model):
     """
@@ -21,7 +22,7 @@ class Video(models.Model):
     title = models.CharField(max_length=200, default="")
     description = models.TextField(blank=True, default="")
     category = models.CharField(max_length=100, blank=True, choices=CATEGORY_CHOICES)
-    thumbnail_url = models.URLField(blank=True, null=True)
+    thumbnail_url = models.ImageField(upload_to='thumbnails/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     file = models.FileField(upload_to='videos/', blank=True, null=True)
 
@@ -30,7 +31,7 @@ class Video(models.Model):
     def thumbnail_url(self):
         if not self.file:
             return None
-        return f"/media/thumbnails/{self.id}_thumbnail.jpg"
+        return f"{settings.BASE_URL}/media/thumbnails/{self.id}_thumbnail.jpg"
 
     def __str__(self):
-        return self.title
+        return f"{self.title}"

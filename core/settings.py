@@ -40,7 +40,8 @@ CORS_ALLOW_CREDENTIALS = True
 
 ACTIVATE_LINK = "http://127.0.0.1:5500/pages/auth/activate.html"
 PASSWORD_CONFIRMATION_LINK = "http://127.0.0.1:5500/pages/auth/confirm_password.html"
-PASSWORD_RESET_LINK = "http://127.0.0.1:5500/pages/auth/forgot_password.html"
+PASSWORD_RESET_LINK = "http://127.0.0.1:5500/pages/auth/confirm_password.html"
+BASE_URL = os.environ.get("BASE_URL", default="http://localhost:8000")
 # Application definition
 
 INSTALLED_APPS = [

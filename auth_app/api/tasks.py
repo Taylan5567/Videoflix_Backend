@@ -1,3 +1,4 @@
+from email.mime.image import MIMEImage
 from django.core.mail import EmailMultiAlternatives, EmailMessage
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -23,12 +24,7 @@ def build_link(user_instance):
     user_uid = urlsafe_base64_encode(user_key_bytes)
     activation_token = default_token_generator.make_token(user_instance)
 
-    activation_path = reverse(
-        'activate-account',
-        kwargs={'uidb64': user_uid, 'token': activation_token}  
-    )
-
-    activation_link = f"{settings.ACTIVATE_LINK}?{activation_path}"
+    activation_link = f"{settings.ACTIVATE_LINK}?uid={user_uid}&token={activation_token}"
 
     return activation_link
 
@@ -70,6 +66,13 @@ def send_activation_email(pk):
     )
 
     email_message_instance.attach_alternative(email_html_body_string, "text/html")
+
+    with open("auth_app/templates/img/logo_icon.png", "rb") as f:
+        logo = MIMEImage(f.read())
+        logo.add_header("Content-ID", "<logo_image>")
+        logo.add_header("Content-Disposition", "inline", filename="logo_icon.png")
+        email_message_instance.attach(logo)
+
     email_message_instance.send(fail_silently=False)
 
 
@@ -87,12 +90,8 @@ def build_link_for_password_reset(user_instance):
     user_uid = urlsafe_base64_encode(user_key_bytes)
     password_reset_token = default_token_generator.make_token(user_instance)
 
-    password_reset_path = reverse(
-        'password_reset',
-        kwargs={'uidb64': user_uid, 'token': password_reset_token}
-    )
 
-    password_reset_link = f"{settings.PASSWORD_RESET_LINK}{password_reset_path}"
+    password_reset_link = f"{settings.PASSWORD_RESET_LINK}?uid={user_uid}&token={password_reset_token}"
 
     return password_reset_link
 
@@ -108,7 +107,10 @@ def send_password_reset_email(pk):
     user_instance = user_model.objects.get(pk=pk)
     password_reset_link = build_link_for_password_reset(user_instance)
 
-    
+    email_subject_string = render_to_string(
+        "password_reset_subject.txt"
+    ).strip()
+
     email_context_dictionary = {
         "user_email_string": user_instance.email,
         "password_reset_link_string": password_reset_link,
@@ -124,11 +126,19 @@ def send_password_reset_email(pk):
     )
 
     email_message_instance = EmailMultiAlternatives(
+        subject=email_subject_string,
         body=email_text_body_string,
         from_email=settings.DEFAULT_FROM_EMAIL,
         to=[user_instance.email],
     )
 
     email_message_instance.attach_alternative(email_html_body_string, "text/html")
+
+    with open("auth_app/templates/img/logo_icon.png", "rb") as f:
+        logo = MIMEImage(f.read())
+        logo.add_header("Content-ID", "<logo_image>")
+        logo.add_header("Content-Disposition", "inline", filename="logo_icon.png")
+        email_message_instance.attach(logo)
+
     email_message_instance.send(fail_silently=False)
 
