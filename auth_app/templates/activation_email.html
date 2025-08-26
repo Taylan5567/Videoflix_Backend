@@ -4,23 +4,27 @@
     <meta charset="utf-8">
     <title>Konto aktivieren</title>
     <style>
-      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+      body .container { max-width: 1200px; margin: 0 auto; padding: 24px;font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
       .container {margin: 0 auto; padding: 24px; }
-      .button { display:inline-block; padding:12px 18px; text-decoration:none; border-radius:50px; background:#111827; color:#fff; }
+      .header { text-align: center; margin-bottom: 24px; }
+      .button { display:inline-block; padding:12px 18px; text-decoration:none; border-radius:50px; background:#005AFF; color:#fff; font-weight: 700;}
       .muted { color:#6b7280; font-size:14px; }
       .videoflix { color:#005AFF;}
     </style>
   </head>
   <body>
     <div class="container">
+    <div class="header">
       <img src="cid:logo_image" alt="Videoflix Logo">
-      <h2>Dear {{ user_name }},</h2>
-      <p>Thank you for registering in <a class="videoflix">Videoflix</a>. To complete your registration and verify your email adress, please click the link below:</p>
-      <p><a class="button" href="{{ activation_link_string }}">Konto aktivieren</a></p>
+    </div>
+      <p>Dear {{ user_name }},</br>
+      Thank you for registering with <a class="videoflix">Videoflix</a>. To complete your registration and verify your email adress, please click the link below:</p>
+      <p><a class="button" href="{{ activation_link_string }}">Activate account</a></p>
       <p>
         If you did not create an account with us, please disregard this email<br>
       </p>
-      <p>Best regards,<br>Your Videoflix Team.</p>
+      <p>Best regards,</br></br>Your Videoflix Team.</p>
+    </div>
     </div>
   </body>
 </html>

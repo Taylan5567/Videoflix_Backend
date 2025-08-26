@@ -82,33 +82,21 @@ def convert_video_to_hls(source, video_id):
 
 
 def thumbnail_video(source, video_id):
-    """
-    Generate a thumbnail from a video file using FFmpeg.
-
-    Args:
-        source (str or Path): Path to the source video.
-        video_id (str): Identifier for the output filename.
-
-    Returns:
-        Path: Path to the generated thumbnail image.
-    """
     source_path = Path(source)
-    output_dir = Path(settings.MEDIA_ROOT) / "videos" / str(video_id)
+    output_dir = Path(settings.MEDIA_ROOT) / "thumbnails"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     thumbnail_path = output_dir / f"{video_id}_thumbnail.jpg"
 
-    cmd = [
+    command = [
         "ffmpeg", "-y",
         "-ss", "00:00:01.000",
         "-i", str(source_path),
         "-vframes", "1",
         str(thumbnail_path),
     ]
-
-    result = subprocess.run(cmd, capture_output=True, text=True)
-
+    result = subprocess.run(command, capture_output=True, text=True)
     if result.returncode != 0:
         raise RuntimeError(f"ffmpeg failed: {result.stderr}")
 
-    return settings.MEDIA_URL + f"videos/{video_id}/{video_id}_thumbnail.jpg"
+    return settings.MEDIA_URL + f"thumbnails/{video_id}_thumbnail.jpg"

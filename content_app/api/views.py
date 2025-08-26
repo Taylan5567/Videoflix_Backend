@@ -107,7 +107,7 @@ class ThumbnailView(APIView):
             return Response({"error": "Video not found"}, status=404)
 
         thumbnail_path = os.path.join(
-            settings.MEDIA_ROOT, "videos", str(video.id), "{video.id}_thumbnail.jpg"
+            settings.MEDIA_ROOT, "videos", str(video.id), f"{video.id}_thumbnail.jpg"
         )
 
         if not os.path.exists(thumbnail_path):

@@ -1,4 +1,5 @@
 
+import os
 from rest_framework import serializers
 from content_app.models import Video
 from core import settings
@@ -16,11 +17,15 @@ class VideoSerializer(serializers.ModelSerializer):
         - thumbnail_url
         - category
     """
+    thumbnail_url = serializers.SerializerMethodField()
+
     class Meta:
         model = Video
         fields = ['id', 'created_at', 'title', 'description', 'thumbnail_url', 'category']
 
 
     def get_thumbnail_url(self, obj):
-        # Passt den Dateinamen an deine Realität an (jpg/png)
-        return f"{settings.MEDIA_URL}videos/{obj.id}/{obj.id}_thumbnail.jpg"
+        relative_path = f"thumbnails/{obj.id}_thumbnail.jpg"   
+        media_path = settings.BASE_URL + settings.MEDIA_URL + relative_path        
+        request = self.context.get("request")
+        return request.build_absolute_uri(media_path) if request else media_path
