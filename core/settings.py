@@ -28,8 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+DEBUG = os.getenv("DEBUG", "True") == "True"
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", default="localhost").split(",")
 CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS", default="http://localhost:5500").split(",")
 CORS_ALLOWED_ORIGINS = os.environ.get(
@@ -38,9 +37,18 @@ CORS_ALLOWED_ORIGINS = os.environ.get(
 ).split(",")
 CORS_ALLOW_CREDENTIALS = True
 
-ACTIVATE_LINK = "http://127.0.0.1:5500/pages/auth/activate.html"
-PASSWORD_CONFIRMATION_LINK = "http://127.0.0.1:5500/pages/auth/confirm_password.html"
-PASSWORD_RESET_LINK = "http://127.0.0.1:5500/pages/auth/confirm_password.html"
+ACTIVATE_LINK = os.environ.get(
+    "FRONTEND_ACTIVATE_LINK",
+    "http://127.0.0.1:5500/pages/auth/activate.html",
+)
+PASSWORD_CONFIRMATION_LINK = os.environ.get(
+    "FRONTEND_PASSWORD_CONFIRM_LINK",
+    "http://127.0.0.1:5500/pages/auth/confirm_password.html",
+)
+PASSWORD_RESET_LINK = os.environ.get(
+    "FRONTEND_PASSWORD_RESET_LINK",
+    "http://127.0.0.1:5500/pages/auth/forgot_password.html",
+)
 BASE_URL = os.environ.get("BASE_URL", default="http://localhost:8000")
 # Application definition
 
